@@ -513,3 +513,24 @@ message ReportShuffleFetchFailureResponse {
   bool reSubmitWholeStage = 2;
   string msg = 3;
 }
+
+service CoordinatorAdminServer {
+  // Update Coordinator conf
+  rpc refreshAccessChecker(RefreshAccessCheckerRequest) returns (RefreshAccessCheckerResponse);
+
+}
+
+message RefreshAccessCheckerRequest {
+  string accessCheckerClass = 1;
+}
+
+message RefreshAccessCheckerResponse {
+
+  enum AdminCliStatus {
+    SUCCESS = 0;
+    FAILED = 1;
+  }
+
+  AdminCliStatus status = 1;
+  string msg = 2;
+}

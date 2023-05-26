@@ -102,6 +102,11 @@ public class AccessCandidatesChecker extends AbstractAccessChecker {
   }
 
   @Override
+  public void refreshAccessChecker() {
+    updateAccessCandidates();
+  }
+
+  @Override
   public void close() {
     if (updateAccessCandidatesSES != null) {
       updateAccessCandidatesSES.shutdownNow();

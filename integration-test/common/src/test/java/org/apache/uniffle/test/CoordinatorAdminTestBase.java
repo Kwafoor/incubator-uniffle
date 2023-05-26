@@ -15,25 +15,25 @@
  * limitations under the License.
  */
 
-package org.apache.uniffle.coordinator.access.checker;
+package org.apache.uniffle.test;
 
-import java.io.Closeable;
+import org.apache.uniffle.impl.grpc.CoordinatorAdminGrpcClient;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.apache.uniffle.coordinator.access.AccessCheckResult;
-import org.apache.uniffle.coordinator.access.AccessInfo;
+public class CoordinatorAdminTestBase extends IntegrationTestBase {
 
-/**
- * Interface for checking the access info from the client-side.
- */
-public interface AccessChecker extends Closeable {
+  protected CoordinatorAdminGrpcClient coordinatorAdminClient;
 
-  /**
-   * Called when the AccessManager handle the access request.
-   *
-   * @param accessInfo access info of the client
-   * @return  access check result
-   */
-  AccessCheckResult check(AccessInfo accessInfo);
+  @BeforeEach
+  public void createClient() {
+    coordinatorAdminClient = new CoordinatorAdminGrpcClient(LOCALHOST, COORDINATOR_PORT_1);
+  }
 
-  void refreshAccessChecker();
+  @AfterEach
+  public void closeClient() {
+    if (coordinatorAdminClient != null) {
+      coordinatorAdminClient.close();
+    }
+  }
 }

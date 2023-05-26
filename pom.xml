@@ -269,6 +269,12 @@
         <artifactId>shuffle-server</artifactId>
         <version>${project.version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>org.apache.uniffle</groupId>
+        <artifactId>cli</artifactId>
+        <version>${project.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.apache.uniffle</groupId>
         <artifactId>coordinator</artifactId>

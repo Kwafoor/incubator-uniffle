@@ -17,17 +17,24 @@
 
 package org.apache.uniffle.cli;
 
+import org.apache.uniffle.UniffleCliArgsException;
+import org.apache.uniffle.impl.grpc.CoordinatorAdminGrpcClient;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import org.apache.uniffle.UniffleCliArgsException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 public class UniffleTestCLI {
 
@@ -83,4 +90,20 @@ public class UniffleTestCLI {
     dataOut.close();
     dataErr.close();
   }
+
+  @Test
+  public void testRefreshChecker() throws UniffleCliArgsException{
+    String[] args = {"-rac", "TestChecker"};
+    CoordinatorAdminGrpcClient grpcClient = mock(CoordinatorAdminGrpcClient.class);
+    when(grpcClient.refreshAccessChecker(any(String.class))).thenAnswer(new Answer<Integer>() {
+      @Override
+      public Integer answer(InvocationOnMock invocationOnMock){
+        return 0;
+      }
+    });
+    uniffleCLI.adminGrpcClient = grpcClient;
+    assertEquals(0, uniffleCLI.run(args));
+    verify(grpcClient).refreshAccessChecker(any(String.class));
+  }
+
 }

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
+import org.apache.uniffle.common.config.RssBaseConf;
 import org.junit.jupiter.api.AfterAll;
 
 import org.apache.uniffle.common.util.RssUtils;

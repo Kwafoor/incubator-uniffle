@@ -52,6 +52,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class ServletTest extends IntegrationTestBase {
   private static final String URL_PREFIX = "http://127.0.0.1:12345/api/";
   private static final String NODES_URL = URL_PREFIX + "server/nodes";
+
+  private static final String ADMIN_URL = URL_PREFIX + "server/admin/refresh/accessChecker";
+
   private static final String DECOMMISSION_URL = URL_PREFIX + "server/decommission";
   private static final String CANCEL_DECOMMISSION_URL = URL_PREFIX + "server/cancelDecommission";
   private static CoordinatorServer coordinatorServer;
@@ -153,5 +156,19 @@ public class ServletTest extends IntegrationTestBase {
     response = objectMapper.readValue(content, Response.class);
     assertEquals(0, response.getCode());
     assertEquals(ServerStatus.ACTIVE, shuffleServer.getServerStatus());
+  }
+
+  @Test
+  public void testAdminServlet() throws Exception {
+    CoordinatorConf coordinatorConf = getCoordinatorConf();
+    coordinatorConf.setString(CoordinatorConf.COORDINATOR_ASSIGNMENT_STRATEGY.key(), "BASIC");
+    String accessChecker = "org.apache.uniffle.test.AccessClusterTest$MockedAccessChecker";
+    coordinatorConf.setString(CoordinatorConf.COORDINATOR_ACCESS_CHECKERS.key(), accessChecker);
+    createCoordinatorServer(coordinatorConf);
+    startServers();
+    shutdownServers();
+    String content = TestUtils.httpGet(ADMIN_URL+"?");
+    Response<List<HashMap>> response = objectMapper.readValue(content, new TypeReference<Response<List<HashMap>>>() {
+    });
   }
 }

@@ -15,25 +15,14 @@
  * limitations under the License.
  */
 
-package org.apache.uniffle.coordinator.access.checker;
-
-import java.io.Closeable;
-
-import org.apache.uniffle.coordinator.access.AccessCheckResult;
-import org.apache.uniffle.coordinator.access.AccessInfo;
+package org.apache.uniffle.client.exception;
 
 /**
- * Interface for checking the access info from the client-side.
+ * A retryable exception which is thrown by underlying rest client. The call side can do retry by
+ * catching this exception.
  */
-public interface AccessChecker extends Closeable {
-
-  /**
-   * Called when the AccessManager handle the access request.
-   *
-   * @param accessInfo access info of the client
-   * @return  access check result
-   */
-  AccessCheckResult check(AccessInfo accessInfo);
-
-  void refreshAccessChecker();
+public class RetryableUniffleRestException extends UniffleRestException {
+  public RetryableUniffleRestException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }

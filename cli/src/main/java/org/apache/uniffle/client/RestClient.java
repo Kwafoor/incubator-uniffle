@@ -15,25 +15,14 @@
  * limitations under the License.
  */
 
-package org.apache.uniffle.coordinator.access.checker;
+package org.apache.uniffle.client;
 
-import java.io.Closeable;
+import java.util.Map;
 
-import org.apache.uniffle.coordinator.access.AccessCheckResult;
-import org.apache.uniffle.coordinator.access.AccessInfo;
+/** A underlying http client interface for common rest request. */
+public interface RestClient extends AutoCloseable {
+  <T> T get(String path, Map<String, Object> params, Class<T> type, String authHeader);
 
-/**
- * Interface for checking the access info from the client-side.
- */
-public interface AccessChecker extends Closeable {
+  String get(String path, Map<String, Object> params, String authHeader);
 
-  /**
-   * Called when the AccessManager handle the access request.
-   *
-   * @param accessInfo access info of the client
-   * @return  access check result
-   */
-  AccessCheckResult check(AccessInfo accessInfo);
-
-  void refreshAccessChecker();
 }

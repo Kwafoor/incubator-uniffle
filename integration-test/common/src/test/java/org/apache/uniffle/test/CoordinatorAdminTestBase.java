@@ -15,25 +15,19 @@
  * limitations under the License.
  */
 
-package org.apache.uniffle.coordinator.access.checker;
+package org.apache.uniffle.test;
 
-import java.io.Closeable;
+import org.apache.uniffle.api.AdminRestApi;
+import org.apache.uniffle.client.UniffleRestClient;
+import org.junit.jupiter.api.BeforeEach;
 
-import org.apache.uniffle.coordinator.access.AccessCheckResult;
-import org.apache.uniffle.coordinator.access.AccessInfo;
+public class CoordinatorAdminTestBase extends IntegrationTestBase {
 
-/**
- * Interface for checking the access info from the client-side.
- */
-public interface AccessChecker extends Closeable {
+  protected AdminRestApi adminRestApi;
 
-  /**
-   * Called when the AccessManager handle the access request.
-   *
-   * @param accessInfo access info of the client
-   * @return  access check result
-   */
-  AccessCheckResult check(AccessInfo accessInfo);
-
-  void refreshAccessChecker();
+  @BeforeEach
+  public void createClient() {
+    String hostUrl = String.format("http://%s:%d", LOCALHOST, COORDINATOR_PORT_1);
+    adminRestApi = new AdminRestApi(UniffleRestClient.builder(hostUrl).build());
+  }
 }

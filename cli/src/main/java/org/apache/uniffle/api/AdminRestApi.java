@@ -15,25 +15,33 @@
  * limitations under the License.
  */
 
-package org.apache.uniffle.coordinator.access.checker;
+package org.apache.uniffle.api;
 
-import java.io.Closeable;
+import org.apache.uniffle.client.RestClient;
+import org.apache.uniffle.client.UniffleRestClient;
 
-import org.apache.uniffle.coordinator.access.AccessCheckResult;
-import org.apache.uniffle.coordinator.access.AccessInfo;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Interface for checking the access info from the client-side.
- */
-public interface AccessChecker extends Closeable {
+public class AdminRestApi {
+  private UniffleRestClient client;
 
-  /**
-   * Called when the AccessManager handle the access request.
-   *
-   * @param accessInfo access info of the client
-   * @return  access check result
-   */
-  AccessCheckResult check(AccessInfo accessInfo);
+  private static final String API_BASE_PATH = "admin";
 
-  void refreshAccessChecker();
+  private AdminRestApi() {}
+
+  public AdminRestApi(UniffleRestClient client) {
+    this.client = client;
+  }
+
+  public String refreshAccessChecker(String checker) {
+    String path = String.format("/api/server/%s/%s", API_BASE_PATH, "refresh/accessChecker");
+    Map<String, Object> params = new HashMap<>();
+    params.put("class", checker);
+    return this.getClient().get(path, params, null);
+  }
+
+  private RestClient getClient() {
+    return this.client.getHttpClient();
+  }
 }

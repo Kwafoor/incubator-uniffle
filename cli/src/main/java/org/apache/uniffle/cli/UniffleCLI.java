@@ -45,19 +45,19 @@ public class UniffleCLI extends AbstractCustomCommandLine {
         true, "This is an client cli command that will print args.");
     uniffleAdminCli = new Option(shortPrefix + "a", longPrefix + "admin",
         true, "This is an admin command that will print args.");
-    refreshAccessCli = new Option(shortPrefix + "rac", longPrefix + "refreshChecker",
+    refreshAccessCli = new Option(shortPrefix + "rc", longPrefix + "refreshChecker",
             true, "This is an admin command that will refresh access checker.");
-    help = new Option(shortPrefix + "h", longPrefix + "help",
-        false, "Help for the Uniffle CLI.");
     coordServer = new Option(shortPrefix + "s", longPrefix + "server",
             true, "This is coordinator server host.");
     grpcPort = new Option(shortPrefix + "p", longPrefix + "port",
             true, "This is coordinator server port.");
+    help = new Option(shortPrefix + "h", longPrefix + "help",
+            false, "Help for the Uniffle CLI.");
     allOptions.addOption(uniffleClientCli);
     allOptions.addOption(uniffleAdminCli);
+    allOptions.addOption(refreshAccessCli);
     allOptions.addOption(coordServer);
     allOptions.addOption(grpcPort);
-    allOptions.addOption(refreshAccessCli);
     allOptions.addOption(help);
   }
 
@@ -107,6 +107,7 @@ public class UniffleCLI extends AbstractCustomCommandLine {
     baseOptions.addOption(refreshAccessCli);
     baseOptions.addOption(coordServer);
     baseOptions.addOption(grpcPort);
+    baseOptions.addOption(help);
   }
 
   @Override
